@@ -1,0 +1,51 @@
+[
+                    {
+                        "Classification": "spark-hive-site",
+                        "ConfigurationProperties": {
+                            "hive.metastore.client.factory.class": "com.amazonaws.glue.catalog.metastore.AWSGlueDataCatalogHiveClientFactory",
+                            "maximizeResourceAllocation": "true"
+                        }
+                    },
+                    {
+                        "Classification": "spark-defaults",
+                        "ConfigurationProperties": {
+                            "spark.executor.memory": "2G",
+                            "spark.driver.memory": "4G",
+                            "spark.executor.cores": "2",
+                            "spark.driver.cores": "2",
+                            "spark.executor.instances": "4",
+							"spark.default.parallelism": "16",
+							"spark.driver.extraJavaOptions": "-XX:+UseG1GC -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark -XX:InitiatingHeapOccupancyPercent=35 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:OnOutOfMemoryError='kill -9 %p'",
+							"spark.executor.extraJavaOptions": "-XX:+UseG1GC -XX:+UnlockDiagnosticVMOptions -XX:+G1SummarizeConcMark -XX:InitiatingHeapOccupancyPercent=35 -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:OnOutOfMemoryError='kill -9 %p'",
+                            "spark.yarn.executor.memoryOverheadFactor": "0.1875",
+                            "spark.driver.maxResultSize": "2048M",
+                            "spark.dynamicAllocation.enabled": "false",
+							"spark.history.fs.cleaner.enabled":"true",
+							"spark.history.fs.cleaner.interval":"12h",
+							"spark.history.fs.cleaner.maxAge":"1d"						
+                        }
+                    },
+					{
+                        "Classification": "yarn-site",
+                        "ConfigurationProperties": {
+                            "yarn.log-aggregation.retain-seconds": "86400"
+                        }
+                    },
+                    {
+                        "Classification": "livy-conf",
+                        "ConfigurationProperties": {
+                            "livy.spark.deploy-mode": "cluster"
+                        }
+                    },
+                    {
+                        "Classification": "spark-env",
+                        "Configurations": [
+                            {
+                                "Classification": "export",
+                                "ConfigurationProperties": {
+                                    "PYSPARK_PYTHON": "/usr/bin/python3\n"
+                                }
+                            }
+                        ]
+                    }
+                ],
