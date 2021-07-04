@@ -15,6 +15,14 @@ resource "aws_emr_cluster" "emr_cluster" {
   visible_to_all_users              = var.emr_cluster_visible_to_all_users
   autoscaling_role                  = var.emr_cluster_autoscaling_role
   step_concurrency_level            = var.emr_cluster_step_concurrency_level
+	
+
+ec2_attributes {
+    subnet_id                         = var.subnetid
+    emr_managed_master_security_group = data.aws_security_group.default.id
+    emr_managed_slave_security_group  = data.aws_security_group.default.id
+    instance_profile                  = aws_iam_instance_profile.emr_profile.arn
+  }
 
 instance_groups = [
     {
