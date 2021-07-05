@@ -86,3 +86,37 @@ variable "emr_cluster_step_concurrency_level" {
   type        = number
 }
 
+variable "emr_master_instance_group_name" {
+  description = "EMR master group name"
+  type        = string
+}
+
+variable "master_instance_group_instance_type" {
+  description = "EMR master instance type"
+  type        = string
+  default     = m3.xlarge
+}
+
+variable "master_instance_group_instance_count" {
+  description = "EMR master instance type"
+  type        = number
+  default     = 1
+}
+ 
+variable "master_instance_group_ebs_size" {
+  description = "EMR master instance volume size"
+  type        = number
+  default     = 40
+}
+
+variable "master_instance_group_ebs_type" {
+  description = "Master instances volume type. Valid options are `gp2`, `io1`, `standard` and `st1`"
+  type= string
+  default     = "gp2"
+  
+  variable "master_instance_group_ebs_volumes_per_instance" {
+ description = "The number of EBS volumes with this configuration to attach to each EC2 instance in the Master instance group"
+  type= number
+  default     = 1
+}
+  
