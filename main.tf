@@ -18,12 +18,49 @@ resource "aws_emr_cluster" "emr_cluster" {
 	
 
 ec2_attributes {
+    key_name                          = var.key_name
     subnet_id                         = var.subnetid
     emr_managed_master_security_group = data.aws_security_group.default.id
     emr_managed_slave_security_group  = data.aws_security_group.default.id
     instance_profile                  = aws_iam_instance_profile.emr_profile.arn
   }
+	
+ master_instance_group {
+    name           = var.emr_master_instance_group_name
+    instance_type  = var.master_instance_group_instance_type
+    instance_count = var.master_instance_group_instance_count
+    #bid_price      = var.master_instance_group_bid_price
 
+    ebs_config {
+      size                 = var.master_instance_group_ebs_size
+      type                 = var.master_instance_group_ebs_type
+      volumes_per_instance = var.master_instance_group_ebs_volumes_per_instance
+    }
+  }
+	
+core_instance_group {
+    name           = var.emr_core_instance_group_name
+    instance_type  = var.core_instance_group_instance_type
+    instance_count = var.core_instance_group_instance_count
+
+    ebs_config {
+      size                 = var.core_instance_group_ebs_size
+      type                 = var.core_instance_group_ebs_type
+      iops                 = var.core_instance_group_ebs_iops
+      volumes_per_instance = var.core_instance_group_ebs_volumes_per_instance
+    }
+
+    #bid_price          = var.core_instance_group_bid_price
+    autoscaling_policy = var.core_instance_group_autoscaling_policy
+  }
+	
+	
+	
+	
+	
+	
+	
+	
 instance_groups = [
     {
       name           = "MasterInstanceGroup"
