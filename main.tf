@@ -53,7 +53,13 @@ core_instance_group {
     #bid_price          = var.core_instance_group_bid_price
     autoscaling_policy = var.core_instance_group_autoscaling_policy
   }
-	
+
+bootstrap_action {
+    path = "s3://elasticmapreduce/bootstrap-actions/run-if"
+    name = "runif"
+    args = ["instance.isMaster=true", "echo running on master node"]
+  }
+
 	
 	
 	
