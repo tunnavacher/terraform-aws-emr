@@ -1,7 +1,4 @@
 # AWS EMR cluster
-######################################################################################
-
-
 resource "aws_emr_cluster" "emr_cluster" {
   count = var.enable_emr_cluster ? 1 : 0
   name  = "${local.name}" 
@@ -44,7 +41,7 @@ ec2_attributes {
   }
 	
 core_instance_group {
-    name           = "${local.name}-core_instance_group"
+    name           = var.emr_core_instance_group_name
     instance_type  = var.core_instance_group_instance_type
     instance_count = var.core_instance_group_instance_count
 
@@ -97,22 +94,13 @@ bootstrap_action {
     args = ["instance.isMaster=true", "echo running on master node"]
   }
 
+
+resource "aws_emr_security_configuration" "security_configuration" {
+  name = "emrsc"
+  configuration = file("${path.module}/emr_configurations.json")
+}
 	
 	
 	
 	
 	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
