@@ -1,3 +1,17 @@
+# AWS EMR cluster default role configuration
+###################################################
+
+
+resource "aws_iam_instance_profile" "emr_profile" {
+  name = "emr_profile"
+  role = aws_iam_role.iam_emr_profile_role.name
+}
+
+resource "aws_iam_role_policy" "iam_emr_profile_policy" {
+  name = "iam_emr_profile_policy"
+  role = aws_iam_role.iam_emr_profile_role.id
+}
+
 # AWS EMR cluster
 resource "aws_emr_cluster" "emr_cluster" {
   count = var.enable_emr_cluster ? 1 : 0
