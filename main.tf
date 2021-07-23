@@ -112,9 +112,4 @@ bootstrap_action {
 resource "aws_emr_security_configuration" "security_configuration" {
   name = "emrsc"
   configuration = file("${path.module}/emr_configurations.json")
-}
-	
-	
-	
-	
-	
+}	
