@@ -1,0 +1,20 @@
+#Security configuration file
+###################################################
+
+
+{
+	"EncryptionConfiguration": {
+		"AtRestEncryptionConfiguration": {
+			"S3EncryptionConfiguration": {
+				"EncryptionMode": "SSE-KMS",
+				"AwsKmsKey": "arn:aws:kms:us-west-2:187416307283:alias/tf_emr_test_key"
+			},
+			"LocalDiskEncryptionConfiguration": {
+				"EncryptionKeyProviderType": "AwsKms",
+				"AwsKmsKey": "arn:aws:kms:us-west-2:187416307283:alias/tf_emr_test_key"
+			}
+		},
+		"EnableInTransitEncryption": true,
+		"EnableAtRestEncryption": true
+	}
+}
