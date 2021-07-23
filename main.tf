@@ -41,7 +41,7 @@ ec2_attributes {
   }
 	
 core_instance_group {
-    name           = var.emr_core_instance_group_name
+    name           = ${local.name}-core_instance_group
     instance_type  = var.core_instance_group_instance_type
     instance_count = var.core_instance_group_instance_count
 
