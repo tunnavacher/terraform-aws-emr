@@ -1,6 +1,8 @@
 # AWS EMR cluster
 resource "aws_emr_cluster" "emr_cluster" {
-  name          = var.emr_cluster_name
+  count = var.enable_emr_cluster ? 1 : 0
+  name  = "${local.name}" 
+  description = "My Dev EMR test cluster"
   release_label = var.release_label
   service_role  = var.emr_cluster_service_role
   
@@ -19,14 +21,14 @@ resource "aws_emr_cluster" "emr_cluster" {
 
 ec2_attributes {
     key_name                          = var.key_name
-    subnet_id                         = var.subnetid
+    subnet_id                         = var.subnetid            #### data.aws_subnet_ids.data.ids
     emr_managed_master_security_group = data.aws_security_group.default.id
     emr_managed_slave_security_group  = data.aws_security_group.default.id
-    instance_profile                  = aws_iam_instance_profile.emr_profile.arn
+    instance_profile                  = aws_iam_instance_profile.emr_profile.arn ##############################
   }
 	
  master_instance_group {
-    name           = var.emr_master_instance_group_name
+    name           = "${local.name}-master_instace_group" 
     instance_type  = var.master_instance_group_instance_type
     instance_count = var.master_instance_group_instance_count
     #bid_price      = var.master_instance_group_bid_price
@@ -46,12 +48,44 @@ core_instance_group {
     ebs_config {
       size                 = var.core_instance_group_ebs_size
       type                 = var.core_instance_group_ebs_type
-      iops                 = var.core_instance_group_ebs_iops
       volumes_per_instance = var.core_instance_group_ebs_volumes_per_instance
     }
 
     #bid_price          = var.core_instance_group_bid_price
-    autoscaling_policy = var.core_instance_group_autoscaling_policy
+    autoscaling_policy = <<EOF
+{
+"Constraints": {
+  "MinCapacity": 1,
+  "MaxCapacity": 2
+},
+"Rules": [
+  {
+    "Name": "ScaleOutMemoryPercentage",
+    "Description": "Scale out if YARNMemoryAvailablePercentage is less than 15",
+    "Action": {
+      "SimpleScalingPolicyConfiguration": {
+        "AdjustmentType": "CHANGE_IN_CAPACITY",
+        "ScalingAdjustment": 1,
+        "CoolDown": 300
+      }
+    },
+    "Trigger": {
+      "CloudWatchAlarmDefinition": {
+        "ComparisonOperator": "LESS_THAN",
+        "EvaluationPeriods": 1,
+        "MetricName": "YARNMemoryAvailablePercentage",
+        "Namespace": "AWS/ElasticMapReduce",
+        "Period": 300,
+        "Statistic": "AVERAGE",
+        "Threshold": 15.0,
+        "Unit": "PERCENT"
+      }
+    }
+  }
+]
+}
+EOF
+  }
   }
 
 bootstrap_action {
@@ -60,7 +94,7 @@ bootstrap_action {
     args = ["instance.isMaster=true", "echo running on master node"]
   }
 
-	
+
 	
 	
 	
