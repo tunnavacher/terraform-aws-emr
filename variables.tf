@@ -1,13 +1,38 @@
-variable "emr_cluster_name" {
-  description = "The name of the job flow"
+variable "lob" {
+  description = "Line of business"
   type        = string
-  default     = ""
+  default     = "ecs"
+}
+
+variable "ecs" {
+  description = "Line of business"
+  type        = string
+  default     = "dev"
+}
+
+
+variable "application" {
+  description = "Line of business"
+  type        = string
+  default     = "edm"
+}
+
+variable "emr_cluster" {
+  description = "Line of business"
+  type        = string
+  default     = "test"
+}
+
+variable "emr_cluster" {
+  description = "Line of business"
+  type        = string
+  default     = "test"
 }
 
 variable "release_label" {
   description = "(Required) The release label for the Amazon EMR release ["emr-5.29.0","emr-5.30.0","emr-5.30.1"]"
   type        = string
-  default     = ""
+  default     = "emr-5.29.0"
 }
 
 variable "emr_cluster_service_role" {
@@ -108,29 +133,7 @@ variable "master_instance_group_ebs_type" {
   type= number
   default     = 1
 }
-  variable "master_instance_group_bid_price" {
-  type        = string
-  description = "Bid price for each EC2 instance in the Master instance group, expressed in USD. By setting this attribute, the instance group is being declared as a Spot Instance, and will implicitly create a Spot request. Leave this blank to use On-Demand Instances"
-  default     = ""
-}
-  var.emr_core_instance_group_name
-    instance_type  = var.core_instance_group_instance_type
-    instance_count = var.core_instance_group_instance_count
-
-    ebs_config {
-      size                 = var.core_instance_group_ebs_size
-      type                 = var.core_instance_group_ebs_type
-      iops                 = var.core_instance_group_ebs_iops
-      volumes_per_instance = var.core_instance_group_ebs_volumes_per_instance
-    }
-
-    #bid_price          = var.core_instance_group_bid_price
-    autoscaling_policy = var.core_instance_group_autoscaling_policy
-variable "emr_core_instance_group_name" {
- description = "EMR core instance type"
-  type        = string
-  default     = emr_cluster_core_instance_group
-}
+ 
   
   variable "core_instance_group_instance_count" {
   description = "EMR core instance type"
@@ -160,8 +163,15 @@ variable "core_instance_group_ebs_type" {
   type= number
   default     = 1
 }
-  variable "core_instance_group_bid_price" {
-  type        = string
-  description = "Bid price for each EC2 instance in the Core instance group, expressed in USD. By setting this attribute, the instance group is being declared as a Spot Instance, and will implicitly create a Spot request. Leave this blank to use On-Demand Instances"
-  default     = ""
+
+ variable "key_name" {
+  type= number
+  default = ""
 }
+  
+  variable "subnetid" {
+  type= number
+  default = ""
+}
+  
+  subnetid
